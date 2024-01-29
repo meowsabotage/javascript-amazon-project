@@ -1,5 +1,6 @@
- import {cart} from '../data/cart.js';  // also possible {cart as myCart}
+ import {cart, addToCart} from '../data/cart.js';  // also possible {cart as myCart}
  import {products} from '../data/products.js';
+
  
  let productsHTML = '';
 
@@ -64,16 +65,24 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
 
 
-document.querySelectorAll('.js-add-to-cart')
-    .forEach((button) => {
-      let myTimeout;
-      let timeoutToggle;
-      button.addEventListener('click', () => {
-        const {productId} = button.dataset;
-        const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-        let matchingItem; 
-      
-        document.querySelector(`.js-added-to-cart-${productId}`).classList.add("message-display");
+function updateCartQuantity(){
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  })
+
+
+  document.querySelector('.js-cart-quantity')
+    .innerHTML = cartQuantity;
+console.log(cart);
+
+
+}
+
+function displayAddedButton(productId){
+  let myTimeout;
+  let timeoutToggle;
+  document.querySelector(`.js-added-to-cart-${productId}`).classList.add("message-display");
 
         if (!timeoutToggle){
           timeoutToggle = true;
@@ -93,34 +102,23 @@ document.querySelectorAll('.js-add-to-cart')
           //console.log(timeoutToggle);
 
         }
-        
-
-        cart.forEach((item) => {
-          if (productId === item.productId) {
-            matchingItem = item;
-          }
-        });
-
-        if (matchingItem) {
-          matchingItem.quantity += quantity ;
-          
-        } else {
-            cart.push({
-              productId,
-              quantity
-            })
-        }
-
-        let cartQuantity = 0;
-        cart.forEach((item) => {
-          cartQuantity += item.quantity;
-        })
+}
 
 
-        document.querySelector('.js-cart-quantity')
-          .innerHTML = cartQuantity;
+document.querySelectorAll('.js-add-to-cart')
+    .forEach((button) => {
       
-        console.log(cartQuantity);
-        console.log(cart);
+      button.addEventListener('click', () => {
+        const {productId} = button.dataset;
+        const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
+        addToCart(productId, quantity);
+        updateCartQuantity();
+        displayAddedButton(productId);
+
+        
+        
+      
+
+
       })
     });
