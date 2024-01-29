@@ -1,4 +1,7 @@
+ import {cart} from '../data/cart.js';  // also possible {cart as myCart}
+ 
  let productsHTML = '';
+
 
 products.forEach((product) => {
 //const html = 
@@ -42,7 +45,7 @@ products.forEach((product) => {
 
     <div class="product-spacer"></div>
 
-    <div class="added-to-cart">
+    <div class="added-to-cart js-added-to-cart-${product.id}">
     <img src="images/icons/checkmark.png">
     Added
     </div>
@@ -55,15 +58,41 @@ products.forEach((product) => {
 
     });
 
+
 document.querySelector('.js-products-grid').innerHTML = productsHTML; 
+
+
 
 document.querySelectorAll('.js-add-to-cart')
     .forEach((button) => {
+      let myTimeout;
+      let timeoutToggle;
       button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
-        const selectedQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-
+        const {productId} = button.dataset;
+        const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
         let matchingItem; 
+      
+        document.querySelector(`.js-added-to-cart-${productId}`).classList.add("message-display");
+
+        if (!timeoutToggle){
+          timeoutToggle = true;
+          myTimeout = setTimeout(() => {
+            document.querySelector(`.js-added-to-cart-${productId}`).classList.remove("message-display");
+            timeoutToggle = false;
+          }, 2000);
+        
+        
+        }   else if(timeoutToggle){
+          clearTimeout(myTimeout);
+          myTimeout = setTimeout(() => {
+            document.querySelector(`.js-added-to-cart-${productId}`).classList.remove("message-display");
+            //console.log(timeoutToggle);
+            timeoutToggle = false;
+          }, 2000);  
+          //console.log(timeoutToggle);
+
+        }
+        
 
         cart.forEach((item) => {
           if (productId === item.productId) {
@@ -72,11 +101,12 @@ document.querySelectorAll('.js-add-to-cart')
         });
 
         if (matchingItem) {
-          matchingItem.quantity += selectedQuantity ;
+          matchingItem.quantity += quantity ;
+          
         } else {
             cart.push({
-              productId: productId,
-              quantity: selectedQuantity
+              productId,
+              quantity
             })
         }
 

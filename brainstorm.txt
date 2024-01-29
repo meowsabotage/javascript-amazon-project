@@ -1,0 +1,5 @@
+check if there is active Timeout
+
+if no, then initiate regular timeout 2s
+
+if yes, then cancel existing timeout and replace by new timeout

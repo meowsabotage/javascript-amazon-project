@@ -656,5 +656,37 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "bc2847e9-4423-403f-b7cf-57fde044a955",
+    image: "images/products/backpack.jpg",
+    name: "Unisex backpack 55l",
+    rating: {
+      stars: 3.5,
+      count: 128
+    },
+    priceCents: 3995,
+    keywords: [
+      "sweaters",
+      "hoodies",
+      "apparel",
+      "mens"
+    ]
+  },
+  {
+    id: "bc5547e9-4423-403f-b7cf-57fde044a955",
+    image: "images/products/umbrella.jpg",
+    name: "Umbrella green",
+    rating: {
+      stars: 4.5,
+      count: 458
+    },
+    priceCents: 1299,
+    keywords: [
+      "sweaters",
+      "hoodies",
+      "apparel",
+      "mens"
+    ]
   }
 ];
